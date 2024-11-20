@@ -9,7 +9,6 @@ const props = defineProps({
   isFavorite: Boolean,
   isAdded: Boolean,
   id: String,
-  onClickAdd: Function,
   addToCart: Function
 });
 const isFavorite = ref(props.isFavorite);

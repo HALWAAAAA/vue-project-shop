@@ -55,6 +55,7 @@ const removeFromCart = async (id) => {
 };
 
 provide('removeFromCart', removeFromCart);
+
 const fetchItems = async () => {
   const querySnapshot = await getDocs(collection(db, 'items')); // Отримуємо колекцію "items"
   items.value = querySnapshot.docs.map((doc) => doc.data());
