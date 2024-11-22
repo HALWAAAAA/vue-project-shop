@@ -14,6 +14,8 @@ const openDrawer = () => {
   drawerOpen.value = true;
 };
 
+
+
 const items = ref([]);
 const searchQuery = ref('');
 const displayedItems = ref([]);
