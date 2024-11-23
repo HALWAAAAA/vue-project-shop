@@ -3,7 +3,7 @@ import { inject, computed } from 'vue';
 import CartItem from './CartItem.vue';
 const cartItems = inject('cartItems');
 const itemsInCart = computed(() => cartItems.value);
-const removeFromCart = inject('removeFromCart')
+const removeFromCart = inject('removeFromCart');
 </script>
 
 <template>

@@ -9,7 +9,7 @@ const props = defineProps({
   isFavorite: Boolean,
   isAdded: Boolean,
   id: String,
-  addToCart: Function
+  addToCart: Function,
 });
 const isFavorite = ref(props.isFavorite);
 const isAdded = ref(props.isAdded);
@@ -25,10 +25,10 @@ const toggleFavorite = async () => {
   }
 };
 
-const imageReverse = ()=>{
+const imageReverse = () => {
   props.addToCart(props.id);
-  isAdded.value = !isAdded.value
-}
+  isAdded.value = !isAdded.value;
+};
 </script>
 
 <template>
@@ -50,7 +50,7 @@ const imageReverse = ()=>{
         <b>{{ price }}$</b>
       </div>
       <img
-        :src="!isAdded ? '/plus.svg' : '/checked.svg'"
+        :src="!props.isAdded ? '/plus.svg' : '/checked.svg'"
         alt="add to cart"
         @click="imageReverse"
       />

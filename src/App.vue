@@ -4,6 +4,12 @@ import { onMounted, ref, watch, provide, computed, reactive } from 'vue';
 import Header from './Header.vue';
 import CardList from './components/CardList.vue';
 import { db, collection, getDocs, doc, updateDoc } from './assets/firebase';
+import { storeToRefs } from 'pinia';
+import { useSneakersStore } from './store/state';
+
+const sneakersStore = useSneakersStore();
+const {items:sneakers} = storeToRefs(sneakersStore)
+
 
 const drawerOpen = ref(false);
 const closeDrawer = () => {
@@ -13,10 +19,12 @@ const openDrawer = () => {
   updateCartItems();
   drawerOpen.value = true;
 };
-
-
-
-const items = ref([]);
+// watch(()=>sneakersStore.items,
+// (newItems) =>{
+//     localStorage.setItem('items', JSON.stringify(newItems))
+// },{deep: true}
+// );
+const items = sneakers;
 const searchQuery = ref('');
 const displayedItems = ref([]);
 const sortBy = ref('');
@@ -25,15 +33,13 @@ provide('cartActions', {
   openDrawer,
 });
 
-const addToCart = async (id) => {
+const addToCart = (id) => {
   try {
     const itemIdx = items.value.findIndex((item) => item.id === id);
     if (itemIdx !== -1) {
-      const item = items.value[itemIdx];
-      const reverse = !items.value[itemIdx].isAdded;
-      const itemRef = doc(db, 'items', id);
-      await updateDoc(itemRef, { isAdded: reverse });
-      item.isAdded = reverse;
+      const currentItem = items.value[itemIdx];
+      const reverse = !currentItem.isAdded;
+      sneakersStore.updateSneakersDate(id, {isAdded: reverse})
       updateCartItems();
     }
   } catch (error) {
@@ -42,28 +48,28 @@ const addToCart = async (id) => {
 };
 provide('addToCart', addToCart);
 
-const removeFromCart = async (id) => {
+const removeFromCart = (id) => {
   try {
-    const itemRef = doc(db, 'items', id);
-    await updateDoc(itemRef, { isAdded: false });
     const itemIdx = items.value.findIndex((item) => item.id === id);
     if (itemIdx !== -1) {
-      items.value[itemIdx].isAdded = false;
+      const currentItem = items.value[itemIdx];
+      const reverse = !currentItem.isAdded;
+      sneakersStore.updateSneakersDate(id, {isAdded: reverse})
       updateCartItems();
     }
   } catch (error) {
-    console.error('Error removing item from cart:', error);
+    console.error('Error toggling item in cart:', error);
   }
 };
 
 provide('removeFromCart', removeFromCart);
 
-const fetchItems = async () => {
-  const querySnapshot = await getDocs(collection(db, 'items')); // Отримуємо колекцію "items"
-  items.value = querySnapshot.docs.map((doc) => doc.data());
-  applyFilters();
-  updateCartItems();
-};
+// const fetchItems = async () => {
+//   const querySnapshot = await getDocs(collection(db, 'items')); // Отримуємо колекцію "items"
+//   items.value = querySnapshot.docs.map((doc) => doc.data());
+//   applyFilters();
+//   updateCartItems();
+// };
 
 const cartItems = ref([]);
 const updateCartItems = () => {
@@ -102,7 +108,12 @@ watch([sortBy, searchQuery], applyFilters);
 const onChangeSelect = (event) => {
   sortBy.value = event.target.value;
 };
-onMounted(fetchItems);
+onMounted(() => {
+  sneakersStore.fetchItems().then(()=>{
+    applyFilters()
+    updateCartItems()
+  });
+});
 </script>
 
 <template>
