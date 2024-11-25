@@ -10,9 +10,7 @@ const props = defineProps({
   removeFromCart: Function
 });
 
-const reverse = ()=>{
-  props.removeFromCart(props.id);
-}
+
 </script>
 
 <template>
