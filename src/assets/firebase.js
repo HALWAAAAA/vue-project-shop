@@ -12,7 +12,7 @@ import {
 } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAW-uCDIyKivOfJhT3ymcxeE6ky0ZwVhRs",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: "vue-project-shop.firebaseapp.com",
   projectId: "vue-project-shop",
   storageBucket: "vue-project-shop.firebasestorage.app",

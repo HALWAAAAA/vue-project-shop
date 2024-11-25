@@ -1,84 +1,31 @@
 <script setup>
 import Drawer from './components/Drawer.vue';
-import { onMounted, ref, watch, provide, computed, reactive } from 'vue';
+import { onMounted, ref, watch, provide, computed } from 'vue';
 import Header from './Header.vue';
 import CardList from './components/CardList.vue';
-import { db, collection, getDocs, doc, updateDoc } from './assets/firebase';
 import { storeToRefs } from 'pinia';
 import { useSneakersStore } from './store/state';
-
+import { useDrawerStore } from './Composable/useDrawer';
+const drawerStore = useDrawerStore();
 const sneakersStore = useSneakersStore();
-const {items:sneakers} = storeToRefs(sneakersStore)
+const {items} = storeToRefs(sneakersStore)
 
 
-const drawerOpen = ref(false);
-const closeDrawer = () => {
-  drawerOpen.value = false;
-};
-const openDrawer = () => {
+watch(()=>sneakersStore.items, (newItems) =>{
   updateCartItems();
-  drawerOpen.value = true;
-};
-// watch(()=>sneakersStore.items,
-// (newItems) =>{
-//     localStorage.setItem('items', JSON.stringify(newItems))
-// },{deep: true}
-// );
-const items = sneakers;
+}, {deep: true});
+
+
 const searchQuery = ref('');
-const displayedItems = ref([]);
 const sortBy = ref('');
-provide('cartActions', {
-  closeDrawer,
-  openDrawer,
-});
 
-const addToCart = (id) => {
-  try {
-    const itemIdx = items.value.findIndex((item) => item.id === id);
-    if (itemIdx !== -1) {
-      const currentItem = items.value[itemIdx];
-      const reverse = !currentItem.isAdded;
-      sneakersStore.updateSneakersDate(id, {isAdded: reverse})
-      updateCartItems();
-    }
-  } catch (error) {
-    console.error('Error toggling item in cart:', error);
-  }
-};
-provide('addToCart', addToCart);
-
-const removeFromCart = (id) => {
-  try {
-    const itemIdx = items.value.findIndex((item) => item.id === id);
-    if (itemIdx !== -1) {
-      const currentItem = items.value[itemIdx];
-      const reverse = !currentItem.isAdded;
-      sneakersStore.updateSneakersDate(id, {isAdded: reverse})
-      updateCartItems();
-    }
-  } catch (error) {
-    console.error('Error toggling item in cart:', error);
-  }
-};
-
-provide('removeFromCart', removeFromCart);
-
-// const fetchItems = async () => {
-//   const querySnapshot = await getDocs(collection(db, 'items')); // Отримуємо колекцію "items"
-//   items.value = querySnapshot.docs.map((doc) => doc.data());
-//   applyFilters();
-//   updateCartItems();
-// };
-
-const cartItems = ref([]);
 const updateCartItems = () => {
-  cartItems.value = items.value.filter((item) => item.isAdded);
+  sneakersStore.cartItems = items.value.filter((item) => item.isAdded);
 };
-provide('cartItems', cartItems);
+
 const totalPrice = computed(() => {
   return parseFloat(
-    cartItems.value.reduce((acc, item) => acc + (item.price || 0), 0).toFixed(2)
+    sneakersStore.cartItems.reduce((acc, item) => acc + (item.price || 0), 0).toFixed(2)
   );
 });
 
@@ -101,7 +48,6 @@ const applyFilters = () => {
       .slice()
       .sort((a, b) => (a[key] - b[key]) * order);
   }
-  displayedItems.value = filteredItems;
 };
 watch([sortBy, searchQuery], applyFilters);
 
@@ -119,13 +65,13 @@ onMounted(() => {
 <template>
   <Drawer
     class="border border-pink-500"
-    v-if="drawerOpen"
+    v-if="drawerStore.drawerOpenData"
     :vat-total="vatTotal"
   ></Drawer>
   <div
     class="w-4/5 m-auto bg-white rounded-xl shadow-xl mt-14 border border-purple-500"
   >
-    <Header @open-drawer="openDrawer" :total-price="totalPrice"></Header>
+    <Header :total-price="totalPrice"></Header>
 
     <div class="p-10 border border-yellow-500">
       <div class="flex justify-between items-center">
@@ -155,7 +101,7 @@ onMounted(() => {
         </div>
       </div>
       <div class="mt-10 border border-orange-500">
-        <CardList :items="displayedItems"></CardList>
+        <CardList :items="items"></CardList>
       </div>
     </div>
   </div>

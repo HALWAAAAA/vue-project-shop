@@ -1,7 +1,5 @@
 <script setup>
-import { inject} from 'vue';
 import Card from './Card.vue';
-const addToCart  =inject('addToCart');
 const props = defineProps({
   items: Array,
 });
@@ -12,12 +10,6 @@ const props = defineProps({
     <Card
       v-for="item in items"
       :id="item.id"
-      :imageUrl="item.imageUrl"
-      :title="item.title"
-      :price="item.price"
-      :isAdded="item.isAdded"
-      :isFavorite="item.isFavorite"
-      :add-to-cart="addToCart"
     ></Card>
   </div>
 </template>
