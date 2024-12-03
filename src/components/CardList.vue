@@ -9,7 +9,8 @@ const props = defineProps({
   <div class=" grid grid-cols-4 gap-5">
     <Card
       v-for="item in items"
-      :id="item.id"
+      :key="item.id"
+      :item="item"
     ></Card>
   </div>
 </template>

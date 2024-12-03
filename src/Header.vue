@@ -1,12 +1,8 @@
 <script setup>
-import { useDrawerStore } from './Composable/useDrawer';
-
+import { useDrawerStore } from './store/useDrawerStore';
+import { useSneakersStore } from './store/state';
+const sneakersStore = useSneakersStore();
 const drawerStore = useDrawerStore();
-const props = defineProps({
-  totalPrice: Number,
-  default: 0
-  
-});
 
 </script>
 
@@ -25,7 +21,7 @@ const props = defineProps({
         @click="drawerStore.openDrawer"
       >
         <img src="/cart.svg" alt="Cart" />
-        <b>{{ totalPrice }}$</b>
+        <b>{{ sneakersStore.totalPrice }}$</b>
       </li>
       <li
         class="flex items-center gap-3 text-gray-500 hover:text-black cursor-pointer"

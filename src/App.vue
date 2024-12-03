@@ -5,33 +5,25 @@ import Header from './Header.vue';
 import CardList from './components/CardList.vue';
 import { storeToRefs } from 'pinia';
 import { useSneakersStore } from './store/state';
-import { useDrawerStore } from './Composable/useDrawer';
+import { useDrawerStore } from './store/useDrawerStore';
 const drawerStore = useDrawerStore();
 const sneakersStore = useSneakersStore();
-const {items} = storeToRefs(sneakersStore)
+const { items } = storeToRefs(sneakersStore);
 
-
-watch(()=>sneakersStore.items, (newItems) =>{
-  updateCartItems();
-}, {deep: true});
-
+watch(
+  () => sneakersStore.items,
+  (newItems) => {
+    sneakersStore.updateCartItems();
+  },
+  { deep: true }
+);
 
 const searchQuery = ref('');
 const sortBy = ref('');
 
-const updateCartItems = () => {
-  sneakersStore.cartItems = items.value.filter((item) => item.isAdded);
-};
 
-const totalPrice = computed(() => {
-  return parseFloat(
-    sneakersStore.cartItems.reduce((acc, item) => acc + (item.price || 0), 0).toFixed(2)
-  );
-});
 
-const vatTotal = computed(() => {
-  return parseFloat((totalPrice.value * 1.05).toFixed(2));
-});
+
 
 const applyFilters = () => {
   let filteredItems = items.value;
@@ -55,9 +47,9 @@ const onChangeSelect = (event) => {
   sortBy.value = event.target.value;
 };
 onMounted(() => {
-  sneakersStore.fetchItems().then(()=>{
-    applyFilters()
-    updateCartItems()
+  sneakersStore.fetchItems().then(() => {
+    applyFilters();
+    sneakersStore.updateCartItems();
   });
 });
 </script>
@@ -66,12 +58,11 @@ onMounted(() => {
   <Drawer
     class="border border-pink-500"
     v-if="drawerStore.drawerOpenData"
-    :vat-total="vatTotal"
   ></Drawer>
   <div
     class="w-4/5 m-auto bg-white rounded-xl shadow-xl mt-14 border border-purple-500"
   >
-    <Header :total-price="totalPrice"></Header>
+    <Header></Header>
 
     <div class="p-10 border border-yellow-500">
       <div class="flex justify-between items-center">

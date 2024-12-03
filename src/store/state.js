@@ -35,6 +35,20 @@ export const useSneakersStore = defineStore('sneakers', {
         this.updateSneakersDate(id, { isAdded: reverse });
       }
     },
-    
+    updateCartItems() {
+      this.cartItems = this.items.filter((item) => item.isAdded);
+    },
   },
-});
+  getters: {
+    totalPrice: (state) => {
+      return parseFloat(
+        state.cartItems
+          .reduce((acc, item) => acc + (item.price || 0), 0)
+          .toFixed(2)
+      );
+    },
+    vatTotal:(state) => {
+      return parseFloat((state.totalPrice * 1.05).toFixed(2));
+    }
+}
+})

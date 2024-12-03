@@ -1,9 +1,8 @@
 <script setup>
 import DrawerHeader from './DrawerHeader.vue';
 import CartItemList from './CartItemList.vue';
-const props = defineProps({
-  vatTotal: Number
-})
+import { useSneakersStore } from '../store/state';
+const sneakersStore = useSneakersStore();
 </script>
 
 <template>
@@ -30,7 +29,7 @@ const props = defineProps({
       <div class="flex gap-2">
         <span>Total: </span>
         <div class="flex-1 border-b border-dashed"></div>
-        <b>{{vatTotal}}$</b>
+        <b>{{sneakersStore.vatTotal}}$</b>
       </div>
 
       <button
