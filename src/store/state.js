@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia';
 import { db, collection, getDocs } from '../assets/firebase';
-import { watch } from 'vue';
 
 export const useSneakersStore = defineStore('sneakers', {
   state: () => ({
-    items: JSON.parse(localStorage.getItem('items')) || [],
+    items: [],
+    cartItems: [],
   }),
   actions: {
     async fetchItems() {
@@ -27,5 +27,28 @@ export const useSneakersStore = defineStore('sneakers', {
         localStorage.setItem('items', JSON.stringify(this.items));
       }
     },
+    addToCart(id) {
+      const itemIdx = this.items.findIndex((item) => item.id === id);
+      if (itemIdx !== -1) {
+        const currentItem = this.items[itemIdx];
+        const reverse = !currentItem.isAdded;
+        this.updateSneakersDate(id, { isAdded: reverse });
+      }
+    },
+    updateCartItems() {
+      this.cartItems = this.items.filter((item) => item.isAdded);
+    },
   },
-});
+  getters: {
+    totalPrice: (state) => {
+      return parseFloat(
+        state.cartItems
+          .reduce((acc, item) => acc + (item.price || 0), 0)
+          .toFixed(2)
+      );
+    },
+    vatTotal:(state) => {
+      return parseFloat((state.totalPrice * 1.05).toFixed(2));
+    }
+}
+})

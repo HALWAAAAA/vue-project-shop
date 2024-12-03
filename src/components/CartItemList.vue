@@ -1,23 +1,17 @@
 <script setup>
-import { inject, computed } from 'vue';
 import CartItem from './CartItem.vue';
-const cartItems = inject('cartItems');
-const itemsInCart = computed(() => cartItems.value);
-const removeFromCart = inject('removeFromCart');
+import { useSneakersStore } from '../store/state';
+const sneakersStore = useSneakersStore();
 </script>
 
 <template>
   <div class="border border-red-500 flex flex-col gap-4">
+    <div v-if="sneakersStore.cartItems.length===0">
+      <p>Your cart is empty</p>
+    </div>
     <CartItem
-      v-for="item in itemsInCart"
+      v-for="item in sneakersStore.cartItems"
       :id="item.id"
-      :imageUrl="item.imageUrl"
-      :title="item.title"
-      :price="item.price"
-      :isAdded="item.isAdded"
-      :isFavorite="item.isFavorite"
-      :remove-from-cart="removeFromCart"
-
     ></CartItem>
   </div>
 </template>
