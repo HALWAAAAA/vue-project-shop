@@ -1,13 +1,13 @@
 <script setup>
-import { useDrawerStore } from '../store/useDrawerStore';
+import { useDrawer } from '../Composable/useDrawer';
 
-const drawerStore = useDrawerStore();
+const { closeDrawer } = useDrawer();
 </script>
 
 <template>
   <div class="flex items-center gap-5 mb-8 border border-red-500">
     <svg
-      @click="drawerStore.closeDrawer"
+      @click="closeDrawer"
       class="opacity-30 cursor-pointer rotate-180 hover:opacity-100 transition hover: -translate-x-1"
       width="16"
       height="14"
