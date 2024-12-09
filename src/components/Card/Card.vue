@@ -1,5 +1,5 @@
 <script setup>
-import { useSneakersStore } from '../store/state';
+import { useSneakersStore } from '../../store/state';
 
 const sneakersStore = useSneakersStore();
 
@@ -16,6 +16,7 @@ const props = defineProps({
       :src="!props.item.isFavorite ? '/like-1.svg' : '/like-2.svg'"
       alt="Like 1"
       class="absolute top-8 left-8"
+      @click="sneakersStore.toggleFollowed(props.item.id)"
     />
     <img :src="props.item.imageUrl" alt="Sneaker" />
     <p class="mt-2">{{ props.item.title }}</p>

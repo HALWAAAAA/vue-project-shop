@@ -1,54 +1,95 @@
 import { defineStore } from 'pinia';
 import { db, collection, getDocs } from '../assets/firebase';
+import { computed, ref } from 'vue';
 
-export const useSneakersStore = defineStore('sneakers', {
-  state: () => ({
-    items: [],
-    cartItems: [],
-  }),
-  actions: {
-    async fetchItems() {
-      const localData = JSON.parse(localStorage.getItem('items'));
-      if (localData && localData.length > 0) {
-        this.items = localData;
-      } else {
-        const querySnapshot = await getDocs(collection(db, 'items'));
-        this.items = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-      }
-      localStorage.setItem('items', JSON.stringify(this.items));
-    },
-    updateSneakersDate(id, newAttributes) {
-      const index = this.items.findIndex((item) => item.id === id);
-      if (index !== -1) {
-        this.items[index] = { ...this.items[index], ...newAttributes };
-        localStorage.setItem('items', JSON.stringify(this.items));
-      }
-    },
-    addToCart(id) {
-      const itemIdx = this.items.findIndex((item) => item.id === id);
-      if (itemIdx !== -1) {
-        const currentItem = this.items[itemIdx];
-        const reverse = !currentItem.isAdded;
-        this.updateSneakersDate(id, { isAdded: reverse });
-      }
-    },
-    updateCartItems() {
-      this.cartItems = this.items.filter((item) => item.isAdded);
-    },
-  },
-  getters: {
-    totalPrice: (state) => {
-      return parseFloat(
-        state.cartItems
-          .reduce((acc, item) => acc + (item.price || 0), 0)
-          .toFixed(2)
-      );
-    },
-    vatTotal:(state) => {
-      return parseFloat((state.totalPrice * 1.05).toFixed(2));
+export const useSneakersStore = defineStore('sneakers', () => {
+  const items = ref([]);
+  const cartItems = ref([]);
+  const followedItems = ref([]);
+
+  async function fetchItems() {
+    const querySnapshot = await getDocs(collection(db, 'items'));
+
+    const localFollowed =
+      JSON.parse(localStorage.getItem('followedItems')) || [];
+    const localCart = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+    followedItems.value = localFollowed;
+    cartItems.value = localCart;
+    items.value = querySnapshot.docs.map((doc) => {
+      const item = { id: doc.id, ...doc.data() };
+      return {
+        ...item,
+        isFavorite: localFollowed.includes(item.id),
+        isAdded: localCart.includes(item.id),
+      };
+    });
+  }
+
+  function addToCart(id) {
+    const itemIdx = cartItems.value.indexOf(id);
+
+    if (itemIdx === -1) {
+      cartItems.value.push(id);
+    } else {
+      cartItems.value.splice(itemIdx, 1);
     }
-}
-})
+
+    localStorage.setItem('cartItems', JSON.stringify(cartItems.value));
+    const targetItem = items.value.find((item) => item.id === id);
+
+    if (targetItem) {
+      targetItem.isAdded = !targetItem.isAdded;
+    }
+  }
+
+  function toggleFollowed(id) {
+    const itemIdx = followedItems.value.indexOf(id);
+
+    if (itemIdx === -1) {
+      followedItems.value.push(id);
+    } else {
+      followedItems.value.splice(itemIdx, 1);
+    }
+
+    localStorage.setItem('followedItems', JSON.stringify(followedItems.value));
+    const targetItem = items.value.find((item) => item.id === id);
+
+    if (targetItem) {
+      targetItem.isFavorite = !targetItem.isFavorite;
+    }
+  }
+
+  const updateCartItems = computed(() => {
+    return items.value.filter((item) => cartItems.value.includes(item.id));
+  });
+
+  const updateFollowed = computed(() => {
+    return items.value.filter((item) => followedItems.value.includes(item.id));
+  });
+
+  const totalPrice = computed(() => {
+    return parseFloat(
+      items.value
+        .filter((item) => cartItems.value.includes(item.id))
+        .reduce((acc, item) => acc + (item.price || 0), 0)
+        .toFixed(2)
+    );
+  });
+
+  const vatTotal = computed(() => {
+    return parseFloat((totalPrice.value * 1.05).toFixed(2));
+  });
+  return {
+    items,
+    cartItems,
+    fetchItems,
+    updateCartItems,
+    addToCart,
+    totalPrice,
+    vatTotal,
+    updateFollowed,
+    followedItems,
+    toggleFollowed,
+  };
+});
