@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Followed from './components/Followed/Followed.vue';
+import Followed from './assets/pages/Followed.vue';
 import Home from './assets/pages/Home.vue';
 
 const routes = [

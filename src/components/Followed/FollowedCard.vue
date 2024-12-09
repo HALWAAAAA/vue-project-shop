@@ -1,6 +1,6 @@
 <script setup>
 import { useSneakersStore } from '../../store/state';
-import { onMounted } from 'vue';
+
 const sneakersStore = useSneakersStore();
 
 const props = defineProps({

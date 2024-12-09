@@ -8,61 +8,70 @@ export const useSneakersStore = defineStore('sneakers', () => {
   const followedItems = ref([]);
 
   async function fetchItems() {
-    const localData = JSON.parse(localStorage.getItem('items'));
+    const querySnapshot = await getDocs(collection(db, 'items'));
 
-    if (localData && localData.length > 0) {
-      items.value = localData;
-    } else {
-      const querySnapshot = await getDocs(collection(db, 'items'));
-      items.value = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-    }
+    const localFollowed =
+      JSON.parse(localStorage.getItem('followedItems')) || [];
+    const localCart = JSON.parse(localStorage.getItem('cartItems')) || [];
 
-    localStorage.setItem('items', JSON.stringify(items.value));
-  }
-
-  function updateSneakersDate(id, newAttributes) {
-    const index = items.value.findIndex((item) => item.id === id);
-
-    if (index !== -1) {
-      items.value[index] = { ...items.value[index], ...newAttributes };
-      localStorage.setItem('items', JSON.stringify(items.value));
-    }
+    followedItems.value = localFollowed;
+    cartItems.value = localCart;
+    items.value = querySnapshot.docs.map((doc) => {
+      const item = { id: doc.id, ...doc.data() };
+      return {
+        ...item,
+        isFavorite: localFollowed.includes(item.id),
+        isAdded: localCart.includes(item.id),
+      };
+    });
   }
 
   function addToCart(id) {
-    const itemIdx = items.value.findIndex((item) => item.id === id);
+    const itemIdx = cartItems.value.indexOf(id);
 
-    if (itemIdx !== -1) {
-      const currentItem = items.value[itemIdx];
-      const reverse = !currentItem.isAdded;
-      updateSneakersDate(id, { isAdded: reverse });
+    if (itemIdx === -1) {
+      cartItems.value.push(id);
+    } else {
+      cartItems.value.splice(itemIdx, 1);
     }
-  }
 
-  function updateCartItems() {
-    cartItems.value = items.value.filter((item) => item.isAdded);
+    localStorage.setItem('cartItems', JSON.stringify(cartItems.value));
+    const targetItem = items.value.find((item) => item.id === id);
+
+    if (targetItem) {
+      targetItem.isAdded = !targetItem.isAdded;
+    }
   }
 
   function toggleFollowed(id) {
-    const itemIdx = items.value.findIndex((item) => item.id === id);
+    const itemIdx = followedItems.value.indexOf(id);
 
-    if (itemIdx !== -1) {
-      const currentItem = items.value[itemIdx];
-      const reverse = !currentItem.isFavorite;
-      updateSneakersDate(id, { isFavorite: reverse });
+    if (itemIdx === -1) {
+      followedItems.value.push(id);
+    } else {
+      followedItems.value.splice(itemIdx, 1);
+    }
+
+    localStorage.setItem('followedItems', JSON.stringify(followedItems.value));
+    const targetItem = items.value.find((item) => item.id === id);
+
+    if (targetItem) {
+      targetItem.isFavorite = !targetItem.isFavorite;
     }
   }
 
-  function updateFollowed() {
-    followedItems.value = items.value.filter((item) => item.isFavorite);
-  }
+  const updateCartItems = computed(() => {
+    return items.value.filter((item) => cartItems.value.includes(item.id));
+  });
+
+  const updateFollowed = computed(() => {
+    return items.value.filter((item) => followedItems.value.includes(item.id));
+  });
 
   const totalPrice = computed(() => {
     return parseFloat(
-      cartItems.value
+      items.value
+        .filter((item) => cartItems.value.includes(item.id))
         .reduce((acc, item) => acc + (item.price || 0), 0)
         .toFixed(2)
     );
@@ -75,7 +84,6 @@ export const useSneakersStore = defineStore('sneakers', () => {
     items,
     cartItems,
     fetchItems,
-    updateSneakersDate,
     updateCartItems,
     addToCart,
     totalPrice,

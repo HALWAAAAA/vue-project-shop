@@ -1,6 +1,6 @@
 <script setup>
 import { RouterLink } from 'vue-router';
-import { useDrawer } from './components/Composable/useDrawer';
+import { useDrawer } from './Composable/useDrawer';
 import { useSneakersStore } from './store/state';
 
 const { openDrawer } = useDrawer();

@@ -6,15 +6,6 @@ import { useSneakersStore } from '../../store/state';
 
 const sneakersStore = useSneakersStore();
 const { items } = storeToRefs(sneakersStore);
-
-watch(
-  () => sneakersStore.items,
-  (newItems) => {
-    sneakersStore.updateCartItems();
-  },
-  { deep: true }
-);
-
 const searchQuery = ref('');
 const sortBy = ref('');
 const displayedItems = ref([]);
@@ -48,8 +39,6 @@ const onChangeSelect = (event) => {
 onMounted(() => {
   sneakersStore.fetchItems().then(() => {
     applyFilters();
-    sneakersStore.updateCartItems();
-    sneakersStore.updateFollowed();
   });
 });
 </script>

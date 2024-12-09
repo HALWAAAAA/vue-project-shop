@@ -1,7 +1,7 @@
 <script setup>
 import Drawer from './components/Drawer/Drawer.vue';
 import Header from './Header.vue';
-import { useDrawer } from './components/Composable/useDrawer';
+import { useDrawer } from './Composable/useDrawer';
 import { RouterView } from 'vue-router';
 
 const { drawerOpenData } = useDrawer();
