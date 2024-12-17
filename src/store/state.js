@@ -9,7 +9,6 @@ export const useSneakersStore = defineStore('sneakers', () => {
 
   async function fetchItems() {
     const querySnapshot = await getDocs(collection(db, 'items'));
-
     const localFollowed =
       JSON.parse(localStorage.getItem('followedItems')) || [];
     const localCart = JSON.parse(localStorage.getItem('cartItems')) || [];
@@ -26,38 +25,38 @@ export const useSneakersStore = defineStore('sneakers', () => {
     });
   }
 
-  function addToCart(id) {
-    const itemIdx = cartItems.value.indexOf(id);
+  function localSetItem(key, value) {
+    localStorage.setItem(key, JSON.stringify(value));
+  }
+
+  function updateList(id, list) {
+    const itemIdx = list.value.indexOf(id);
 
     if (itemIdx === -1) {
-      cartItems.value.push(id);
+      list.value.push(id);
     } else {
-      cartItems.value.splice(itemIdx, 1);
-    }
-
-    localStorage.setItem('cartItems', JSON.stringify(cartItems.value));
-    const targetItem = items.value.find((item) => item.id === id);
-
-    if (targetItem) {
-      targetItem.isAdded = !targetItem.isAdded;
+      list.value.splice(itemIdx, 1);
     }
   }
 
-  function toggleFollowed(id) {
-    const itemIdx = followedItems.value.indexOf(id);
-
-    if (itemIdx === -1) {
-      followedItems.value.push(id);
-    } else {
-      followedItems.value.splice(itemIdx, 1);
-    }
-
-    localStorage.setItem('followedItems', JSON.stringify(followedItems.value));
+  function updateItemProperty(id, property) {
     const targetItem = items.value.find((item) => item.id === id);
 
     if (targetItem) {
-      targetItem.isFavorite = !targetItem.isFavorite;
+      targetItem[property] = !targetItem[property];
     }
+  }
+
+  function addToCart(id) {
+    updateList(id, cartItems);
+    updateItemProperty(id, 'isAdded');
+    localSetItem('cartItems', cartItems.value);
+  }
+
+  function toggleFollowed(id) {
+    updateList(id, followedItems);
+    updateItemProperty(id, 'isFavorite');
+    localSetItem('followedItems', followedItems.value);
   }
 
   const updateCartItems = computed(() => {

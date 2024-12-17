@@ -1,7 +1,7 @@
 <script setup>
 import { storeToRefs } from 'pinia';
-import { useSneakersStore } from '../../store/state';
-import FollowedCard from '../../components/Followed/FollowedCard.vue';
+import { useSneakersStore } from '../store/state';
+import FollowedCard from '../components/Followed/FollowedCard.vue';
 import { onMounted } from 'vue';
 
 const sneakersStore = useSneakersStore();

@@ -1,8 +1,8 @@
 <script setup>
 import { onMounted, ref, watch } from 'vue';
-import CardList from '../../components/Card/CardList.vue';
+import CardList from '../components/Card/CardList.vue';
 import { storeToRefs } from 'pinia';
-import { useSneakersStore } from '../../store/state';
+import { useSneakersStore } from '../store/state';
 
 const sneakersStore = useSneakersStore();
 const { items } = storeToRefs(sneakersStore);
