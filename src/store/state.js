@@ -60,12 +60,10 @@ export const useSneakersStore = defineStore('sneakers', () => {
     const targetItem = items.value.find((item) => item.id === id);
     const cartItem = cartItems.value.find((cart) => cart.id === id);
 
-    if (targetItem) {
-      if (cartItem) {
-        targetItem.currentQuantity = cartItem.currentQuantity;
-      } else {
-        targetItem.currentQuantity = 0;
-      }
+    if (cartItem) {
+      targetItem.currentQuantity = cartItem.currentQuantity;
+    } else {
+      targetItem.currentQuantity = 0;
     }
   }
 
