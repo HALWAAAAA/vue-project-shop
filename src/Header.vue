@@ -34,12 +34,14 @@ const sneakersStore = useSneakersStore();
           <span>Followed</span>
         </li>
       </router-link>
-      <li
-        class="flex items-center gap-3 text-gray-500 hover:text-black cursor-pointer"
+      <router-link to="/profile">
+        <li
+          class="flex items-center gap-3 text-gray-500 hover:text-black cursor-pointer"
+        >
+          <img src="/profile.svg" alt="Profile" />
+          <span>Profile</span>
+        </li></router-link
       >
-        <img src="/profile.svg" alt="Profile" />
-        <span>Profile</span>
-      </li>
     </ul>
   </header>
 </template>
