@@ -18,8 +18,10 @@ const props = defineProps({
       class="absolute top-8 left-8"
       @click="sneakersStore.toggleFollowed(props.item.id)"
     />
-    <img :src="props.item.imageUrl" alt="Sneaker" />
-    <p class="mt-2">{{ props.item.title }}</p>
+    <router-link :to="`/card/${props.item.id}`">
+      <img :src="props.item.imageUrl" alt="Sneaker" />
+      <p class="mt-2">{{ props.item.title }}</p>
+    </router-link>
 
     <div class="flex justify-between mt-5">
       <div class="flex flex-col">
