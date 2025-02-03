@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { db, collection, getDocs } from '../assets/firebase';
 import { computed, ref } from 'vue';
+import CartItem from '../components/Cart/CartItem.vue';
 
 export const useSneakersStore = defineStore('sneakers', () => {
   const items = ref([]);
@@ -17,10 +18,12 @@ export const useSneakersStore = defineStore('sneakers', () => {
     cartItems.value = localCart;
     items.value = querySnapshot.docs.map((doc) => {
       const item = { id: doc.id, ...doc.data() };
+      const cartItem = localCart.find((cart) => cart.id === item.id);
       return {
         ...item,
         isFavorite: localFollowed.includes(item.id),
-        isAdded: localCart.includes(item.id),
+        isAdded: !!cartItem,
+        currentQuantity: cartItem ? cartItem.currentQuantity : 0,
       };
     });
   }
@@ -29,11 +32,17 @@ export const useSneakersStore = defineStore('sneakers', () => {
     localStorage.setItem(key, JSON.stringify(value));
   }
 
-  function updateList(id, list) {
-    const itemIdx = list.value.indexOf(id);
+  function updateList(id, list, type = 'id') {
+    const itemIdx = list.value.findIndex((item) =>
+      type === 'object' ? item.id === id : item === id
+    );
 
     if (itemIdx === -1) {
-      list.value.push(id);
+      if (type === 'object') {
+        list.value.push({ id, currentQuantity: 1 });
+      } else {
+        list.value.push(id);
+      }
     } else {
       list.value.splice(itemIdx, 1);
     }
@@ -47,10 +56,47 @@ export const useSneakersStore = defineStore('sneakers', () => {
     }
   }
 
-  function addToCart(id) {
-    updateList(id, cartItems);
+  function updateItemQuantity(id) {
+    const targetItem = items.value.find((item) => item.id === id);
+    const cartItem = cartItems.value.find((cart) => cart.id === id);
+
+    if (targetItem) {
+      if (cartItem) {
+        targetItem.currentQuantity = cartItem.currentQuantity;
+      } else {
+        targetItem.currentQuantity = 0;
+      }
+    }
+  }
+
+  function itemQuantityIncrement(id) {
+    const targetItem = items.value.find((item) => item.id === id);
+    const cartItem = cartItems.value.find((cart) => cart.id === id);
+
+    targetItem.currentQuantity += 1;
+    cartItem.currentQuantity = targetItem.currentQuantity;
+
+    localSetItem('cartItems', cartItems.value);
+  }
+
+  function itemQuantityDecrement(id) {
+    const targetItem = items.value.find((item) => item.id === id);
+    const cartItem = cartItems.value.find((cart) => cart.id === id);
+
+    if (targetItem.currentQuantity > 1) {
+      targetItem.currentQuantity -= 1;
+    } else if (targetItem.currentQuantity === 1) {
+      toggleCartItem(id);
+    }
+    cartItem.currentQuantity = targetItem.currentQuantity;
+    localSetItem('cartItems', cartItems.value);
+  }
+
+  function toggleCartItem(id) {
+    updateList(id, cartItems, 'object');
     updateItemProperty(id, 'isAdded');
     localSetItem('cartItems', cartItems.value);
+    updateItemQuantity(id);
   }
 
   function toggleFollowed(id) {
@@ -60,7 +106,9 @@ export const useSneakersStore = defineStore('sneakers', () => {
   }
 
   const updateCartItems = computed(() => {
-    return items.value.filter((item) => cartItems.value.includes(item.id));
+    return items.value.filter((item) =>
+      cartItems.value.some((cart) => cart.id === item.id)
+    );
   });
 
   const updateFollowed = computed(() => {
@@ -70,8 +118,11 @@ export const useSneakersStore = defineStore('sneakers', () => {
   const totalPrice = computed(() => {
     return parseFloat(
       items.value
-        .filter((item) => cartItems.value.includes(item.id))
-        .reduce((acc, item) => acc + (item.price || 0), 0)
+        .filter((item) => cartItems.value.some((cart) => cart.id === item.id))
+        .reduce((acc, item) => {
+          const quantity = item.currentQuantity || 1;
+          return acc + (item.price || 0) * quantity;
+        }, 0)
         .toFixed(2)
     );
   });
@@ -84,11 +135,13 @@ export const useSneakersStore = defineStore('sneakers', () => {
     cartItems,
     fetchItems,
     updateCartItems,
-    addToCart,
+    toggleCartItem,
     totalPrice,
     vatTotal,
     updateFollowed,
     followedItems,
     toggleFollowed,
+    itemQuantityIncrement,
+    itemQuantityDecrement,
   };
 });

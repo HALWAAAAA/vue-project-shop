@@ -29,8 +29,27 @@ const props = defineProps({
       <img
         :src="!props.item.isAdded ? '/plus.svg' : '/checked.svg'"
         alt="add to cart"
-        @click="sneakersStore.addToCart(props.item.id)"
+        @click="sneakersStore.toggleCartItem(props.item.id)"
       />
+    </div>
+    <div
+      class="flex justify-between pt-1"
+      v-if="props.item.isAdded && props.item.currentQuantity >= 1"
+    >
+      <p>Quantity:</p>
+      <button
+        @click="sneakersStore.itemQuantityDecrement(props.item.id)"
+        class="border rounded px-1 hover:bg-gray-200"
+      >
+        -
+      </button>
+      <b>{{ props.item.currentQuantity }}</b>
+      <button
+        class="border rounded px-2 hover:bg-gray-200"
+        @click="sneakersStore.itemQuantityIncrement(props.item.id)"
+      >
+        +
+      </button>
     </div>
   </div>
 </template>
