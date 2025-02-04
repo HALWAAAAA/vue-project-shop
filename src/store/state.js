@@ -128,6 +128,7 @@ export const useSneakersStore = defineStore('sneakers', () => {
   const vatTotal = computed(() => {
     return parseFloat((totalPrice.value * 1.05).toFixed(2));
   });
+
   return {
     items,
     cartItems,
