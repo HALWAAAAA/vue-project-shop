@@ -1,14 +1,10 @@
 <script setup>
 import { useSneakersStore } from '../store/state';
-import { onMounted } from 'vue';
+
 import CheckoutCart from '../components/Checkout/CheckoutCart.vue';
 import CheckoutForm from '../components/Checkout/CheckoutForm.vue';
 
 const sneakersStore = useSneakersStore();
-
-onMounted(() => {
-  sneakersStore.fetchItems();
-});
 </script>
 
 <template>

@@ -5,6 +5,8 @@ import Profile from './pages/Profile.vue';
 import CardDescription from './pages/CardDescription.vue';
 import Checkout from './pages/Checkout.vue';
 
+import { CHECKOUT_NAME, CHECKOUT_ROUTE } from './routerPath';
+
 const routes = [
   {
     path: '/',
@@ -27,8 +29,8 @@ const routes = [
     component: CardDescription,
   },
   {
-    path: '/checkout',
-    name: 'Checkout',
+    path: CHECKOUT_ROUTE,
+    name: CHECKOUT_NAME,
     component: Checkout,
   },
 ];

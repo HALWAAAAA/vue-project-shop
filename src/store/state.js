@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { db, collection, getDocs } from '../assets/firebase';
 import { computed, ref } from 'vue';
-import CartItem from '../components/Cart/CartItem.vue';
+import { useAsyncState } from '@vueuse/core';
 
 export const useSneakersStore = defineStore('sneakers', () => {
   const items = ref([]);
@@ -27,6 +27,8 @@ export const useSneakersStore = defineStore('sneakers', () => {
       };
     });
   }
+
+  useAsyncState(fetchItems, []);
 
   function localSetItem(key, value) {
     localStorage.setItem(key, JSON.stringify(value));

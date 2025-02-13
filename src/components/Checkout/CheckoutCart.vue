@@ -5,9 +5,10 @@ import { computed } from 'vue';
 
 const sneakersStore = useSneakersStore();
 const { updateCartItems, vatTotal } = storeToRefs(sneakersStore);
+const shippingPricePerItem = 15;
 
 const shipping = computed(() => {
-  return updateCartItems.value.length * 15;
+  return updateCartItems.value.length * shippingPricePerItem;
 });
 
 const total = computed(() => {

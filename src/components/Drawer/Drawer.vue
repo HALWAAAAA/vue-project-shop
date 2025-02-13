@@ -4,6 +4,7 @@ import CartItemList from '../Cart/CartItemList.vue';
 import { useSneakersStore } from '../../store/state';
 import { useDrawer } from '../../composables/useDrawer';
 import { useRouter } from 'vue-router';
+import { CHECKOUT_ROUTE } from '../../routerPath';
 
 const router = useRouter();
 const sneakersStore = useSneakersStore();
@@ -12,7 +13,7 @@ const { closeDrawer } = useDrawer();
 function goToCheckout() {
   closeDrawer();
 
-  router.push('/checkout');
+  router.push(CHECKOUT_ROUTE);
 }
 </script>
 
@@ -44,7 +45,7 @@ function goToCheckout() {
         <button
           @click="goToCheckout()"
           class="mt-4 bg-lime-500 transition w-full rounded-xl py-2 text-white hover:bg-lime-600 disabled:bg-slate-300 active:bg-lime-700 cursor-pointer disabled:pointer-events-none"
-          :disabled="sneakersStore.cartItems == 0"
+          :disabled="sneakersStore.cartItems.length === 0"
         >
           Go to checkout
         </button>
