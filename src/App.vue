@@ -8,12 +8,10 @@ const { drawerOpenData } = useDrawer();
 </script>
 
 <template>
-  <Drawer class="border border-pink-500" v-if="drawerOpenData" />
-  <div
-    class="w-4/5 m-auto bg-white rounded-xl shadow-xl mt-14 border border-purple-500"
-  >
+  <Drawer v-if="drawerOpenData" />
+  <div class="w-4/5 m-auto bg-white rounded-xl shadow-xl mt-14">
     <Header />
-    <div class="p-10 border border-yellow-500">
+    <div class="p-10">
       <RouterView />
     </div>
   </div>
