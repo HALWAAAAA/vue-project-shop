@@ -7,7 +7,7 @@ export const useSneakersStore = defineStore('sneakers', () => {
   const items = ref([]);
   const cartItems = ref([]);
   const followedItems = ref([]);
-  
+  const historyItems = ref([]);
 
   async function fetchItems() {
     const querySnapshot = await getDocs(collection(db, 'items'));
