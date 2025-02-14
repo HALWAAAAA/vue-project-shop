@@ -7,6 +7,7 @@ export const useSneakersStore = defineStore('sneakers', () => {
   const items = ref([]);
   const cartItems = ref([]);
   const followedItems = ref([]);
+  
 
   async function fetchItems() {
     const querySnapshot = await getDocs(collection(db, 'items'));
@@ -49,7 +50,7 @@ export const useSneakersStore = defineStore('sneakers', () => {
       list.value.splice(itemIdx, 1);
     }
   }
-
+//change boolean on followed/isAdded
   function updateItemProperty(id, property) {
     const targetItem = items.value.find((item) => item.id === id);
 
