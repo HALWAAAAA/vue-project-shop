@@ -5,27 +5,38 @@ import Profile from './pages/Profile.vue';
 import CardDescription from './pages/CardDescription.vue';
 import Checkout from './pages/Checkout.vue';
 
-import { CHECKOUT_NAME, CHECKOUT_ROUTE } from './routerPath';
+import {
+  CHECKOUT_NAME,
+  CHECKOUT_ROUTE,
+  HOME_NAME,
+  HOME_ROUTE,
+  FOLLOWED_NAME,
+  FOLLOWED_ROUTE,
+  PROFILE_NAME,
+  PROFILE_ROUTE,
+  CARD_DESCRIPTION_NAME,
+  CARD_DESCRIPTION_ROUTE,
+} from './routerPath';
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
+    path: HOME_ROUTE,
+    name: HOME_NAME,
     component: Home,
   },
   {
-    path: '/followed',
-    name: 'Followed',
+    path: FOLLOWED_ROUTE,
+    name: FOLLOWED_NAME,
     component: Followed,
   },
   {
-    path: '/profile',
-    name: 'Profile',
+    path: PROFILE_ROUTE,
+    name: PROFILE_NAME,
     component: Profile,
   },
   {
-    path: '/card/:id',
-    name: 'CardDescription',
+    path: CARD_DESCRIPTION_ROUTE,
+    name: CARD_DESCRIPTION_NAME,
     component: CardDescription,
   },
   {

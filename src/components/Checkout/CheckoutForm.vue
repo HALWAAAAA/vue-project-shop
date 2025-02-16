@@ -1,3 +1,9 @@
+<script setup>
+import { useSneakersStore } from '../../store/state';
+
+const sneakersStore = useSneakersStore();
+</script>
+
 <template>
   <div class="flex-1 bg-white rounded-lg shadow p-6">
     <h2 class="text-xl font-semibold mb-4">Shipping information</h2>
@@ -88,7 +94,6 @@
         >
         <input
           type="text"
-          required
           id="card"
           placeholder="00 0000 0000 0000 00"
           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
@@ -120,6 +125,7 @@
       </div>
       <button
         type="submit"
+        @click="sneakersStore.addToHistory()"
         class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
       >
         Place Order
