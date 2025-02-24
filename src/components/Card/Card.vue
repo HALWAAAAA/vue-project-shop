@@ -1,5 +1,6 @@
 <script setup>
 import { useSneakersStore } from '../../store/state';
+import ButtonFollowed from '../UI/Buttons/ButtonFollowed.vue';
 
 const sneakersStore = useSneakersStore();
 
@@ -12,12 +13,7 @@ const props = defineProps({
   <div
     class="relative border border-green-500 rounded-3xl p-8 cursor-pointer bg-white transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl flex flex-col justify-between"
   >
-    <img
-      :src="!props.item.isFavorite ? '/like-1.svg' : '/like-2.svg'"
-      alt="Like 1"
-      class="absolute top-6 w-8 h-8 transition-transform duration-200 hover:scale-110 active:scale-90"
-      @click="sneakersStore.toggleFollowed(props.item.id)"
-    />
+<button-followed alt="image_follow" @toggle="sneakersStore.toggleFollowed(props.item.id)" :isFavorite="props.item.isFavorite"/>
     <router-link :to="`/card/${props.item.id}`">
       <img :src="props.item.imageUrl" alt="Sneaker" />
       <p class="mt-2 text-lg text-gray-800">{{ props.item.title }}</p>
