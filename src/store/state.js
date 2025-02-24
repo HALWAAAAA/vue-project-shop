@@ -7,15 +7,18 @@ export const useSneakersStore = defineStore('sneakers', () => {
   const items = ref([]);
   const cartItems = ref([]);
   const followedItems = ref([]);
+  const historyItems = ref([]);
 
   async function fetchItems() {
     const querySnapshot = await getDocs(collection(db, 'items'));
     const localFollowed =
       JSON.parse(localStorage.getItem('followedItems')) || [];
     const localCart = JSON.parse(localStorage.getItem('cartItems')) || [];
+    const localHistory = JSON.parse(localStorage.getItem('historyItems')) || [];
 
     followedItems.value = localFollowed;
     cartItems.value = localCart;
+    historyItems.value = localHistory;
     items.value = querySnapshot.docs.map((doc) => {
       const item = { id: doc.id, ...doc.data() };
       const cartItem = localCart.find((cart) => cart.id === item.id);
@@ -49,7 +52,7 @@ export const useSneakersStore = defineStore('sneakers', () => {
       list.value.splice(itemIdx, 1);
     }
   }
-
+  //change boolean on followed/isAdded
   function updateItemProperty(id, property) {
     const targetItem = items.value.find((item) => item.id === id);
 
@@ -105,6 +108,26 @@ export const useSneakersStore = defineStore('sneakers', () => {
     localSetItem('followedItems', followedItems.value);
   }
 
+  function addToHistory() {
+    historyItems.value.unshift(...cartItems.value);
+    cartItems.value = [];
+    localSetItem('historyItems', historyItems.value);
+    localStorage.removeItem('cartItems');
+  }
+
+  const getItemsHistory = computed(() => {
+    return historyItems.value.reduce((acc, cart) => {
+      const foundItem = items.value.find((item) => item.id === cart.id);
+      if (foundItem) acc.push(foundItem);
+      return acc;
+    }, []);
+  });
+
+  function clearHistory() {
+    historyItems.value = [];
+    localStorage.removeItem('historyItems');
+  }
+
   const updateCartItems = computed(() => {
     return items.value.filter((item) =>
       cartItems.value.some((cart) => cart.id === item.id)
@@ -133,6 +156,7 @@ export const useSneakersStore = defineStore('sneakers', () => {
 
   return {
     items,
+    historyItems,
     cartItems,
     fetchItems,
     updateCartItems,
@@ -144,5 +168,8 @@ export const useSneakersStore = defineStore('sneakers', () => {
     toggleFollowed,
     itemQuantityIncrement,
     itemQuantityDecrement,
+    addToHistory,
+    getItemsHistory,
+    clearHistory,
   };
 });
