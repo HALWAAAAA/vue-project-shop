@@ -8,7 +8,7 @@ const { updateCartItems } = storeToRefs(sneakersStore);
 </script>
 
 <template>
-  <div class="border border-red-500 flex flex-col gap-4">
+  <div class="flex flex-col gap-4">
     <div v-if="sneakersStore.cartItems.length === 0">
       <p>Your cart is empty</p>
     </div>

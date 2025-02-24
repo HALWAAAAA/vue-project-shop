@@ -71,7 +71,7 @@ onMounted(() => {
     </div>
   </div>
 
-  <div class="mt-10 border border-orange-500">
+  <div class="mt-10">
     <CardList :items="displayedItems" />
   </div>
 </template>
