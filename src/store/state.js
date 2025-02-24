@@ -110,16 +110,17 @@ export const useSneakersStore = defineStore('sneakers', () => {
 
   function addToHistory() {
     historyItems.value.unshift(...cartItems.value);
-    console.log(historyItems.value);
     cartItems.value = [];
     localSetItem('historyItems', historyItems.value);
     localStorage.removeItem('cartItems');
   }
 
   const getItemsHistory = computed(() => {
-    return historyItems.value.map((cart) => {
-      return items.value.find((item) => item.id === cart.id);
-    });
+    return historyItems.value.reduce((acc, cart) => {
+      const foundItem = items.value.find((item) => item.id === cart.id);
+      if (foundItem) acc.push(foundItem);
+      return acc;
+    }, []);
   });
 
   function clearHistory() {

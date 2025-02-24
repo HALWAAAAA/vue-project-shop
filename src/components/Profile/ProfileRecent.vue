@@ -1,7 +1,10 @@
 <script setup>
+import { ref } from 'vue';
 const props = defineProps({
   item: Object,
 });
+
+const currentDate = ref(new Date().toLocaleDateString());
 </script>
 
 <template>
@@ -13,7 +16,7 @@ const props = defineProps({
           <h3 class="font-semibold text-gray-900">
             {{ props.item.title }}
           </h3>
-          <p class="text-sm text-gray-600"> {{ new Date().toLocaleDateString() }}</p>
+          <p class="text-sm text-gray-600"> {{ currentDate }}</p>
         </div>
       </div>
       <div class="text-right px-6">
