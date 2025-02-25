@@ -52,13 +52,14 @@ const emit = defineEmits(['toggle']);
 </template>
 
 <style>
-/* From Uiverse.io by catraco */
 .heart-container {
   --heart-color: rgb(255, 91, 137);
   position: relative;
-  width: 35px;
-  height: 35px;
+  width: 30px;
+  height: 30px;
   transition: 0.3s;
+  left: -10px;
+  top: -10px;
 }
 
 .heart-container .checkbox {

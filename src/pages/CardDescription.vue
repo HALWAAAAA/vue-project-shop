@@ -2,6 +2,9 @@
 import { useRoute } from 'vue-router';
 import { useSneakersStore } from '../store/state';
 import { computed, onMounted } from 'vue';
+import ButtonAddItem from '../components/UI/Buttons/ButtonAddItem.vue';
+import ButtonPlus from '../components/UI/Buttons/ButtonPlus.vue';
+import ButtonMinus from '../components/UI/Buttons/ButtonMinus.vue';
 
 const sneakersStore = useSneakersStore();
 const route = useRoute();
@@ -39,29 +42,28 @@ onMounted(() => {
         </div>
         <div class="flex gap-5">
           <p class="text-2xl text-gray-600">Add to cart</p>
-          <img
-            :src="!card.isAdded ? '/plus.svg' : '/checked.svg'"
+          <button-add-item
             alt="add to cart"
-            @click="sneakersStore.toggleCartItem(card.id)"
+            @toggle="sneakersStore.toggleCartItem(card.id)"
+            :isAdded="card.isAdded"
           />
-
           <div
             class="flex pt-1 gap-3"
             v-if="card.isAdded && card.currentQuantity >= 1"
           >
-            <button
+            <button-minus
               @click="sneakersStore.itemQuantityDecrement(card.id)"
               class="border rounded px-1 hover:bg-gray-200"
             >
               -
-            </button>
+            </button-minus>
             <b>{{ card.currentQuantity }}</b>
-            <button
+            <button-plus
               class="border rounded px-2 hover:bg-gray-200"
               @click="sneakersStore.itemQuantityIncrement(card.id)"
             >
               +
-            </button>
+            </button-plus>
           </div>
         </div>
       </div>

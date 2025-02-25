@@ -30,6 +30,6 @@ const { closeDrawer } = useDrawer();
         stroke-linejoin="round"
       />
     </svg>
-    <h2 class="text-2xl font-bold">Cart</h2>
+    <h2 class="text-3xl font-extrabold text-gray-800 tracking-wide">Cart</h2>
   </div>
 </template>

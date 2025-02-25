@@ -1,24 +1,33 @@
 <script setup>
 import { storeToRefs } from 'pinia';
 import { useSneakersStore } from '../store/state';
-import FollowedCard from '../components/Followed/FollowedCard.vue';
+import Card from '../components/Card/Card.vue';
+import { onMounted } from 'vue';
+import SpinnerLoader from '../components/UI/Spinner/SpinnerLoader.vue';
 
 const sneakersStore = useSneakersStore();
 const { updateFollowed } = storeToRefs(sneakersStore);
 
+onMounted(async () => {
+  await sneakersStore.fetchItems();
+});
 </script>
 
 <template>
   <div>
-    <div v-if="sneakersStore.followedItems.length === 0">
-      <p>Your followed is empty!</p>
+    <div
+      v-if="sneakersStore.isLoading"
+      class="flex justify-center items-center h-64 w-full"
+    >
+      <SpinnerLoader />
+    </div>
+    <div v-else-if="sneakersStore.followedItems.length === 0">
+      <p class="text-gray-500 text-lg font-medium text-center mt-6">
+        Your followed is empty!
+      </p>
     </div>
     <div v-else class="grid grid-cols-4 gap-5">
-      <FollowedCard
-        v-for="item in updateFollowed"
-        :key="item.id"
-        :item="item"
-      />
+      <Card v-for="item in updateFollowed" :key="item.id" :item="item" />
     </div>
   </div>
 </template>
