@@ -8,30 +8,39 @@ export const useSneakersStore = defineStore('sneakers', () => {
   const cartItems = ref([]);
   const followedItems = ref([]);
   const historyItems = ref([]);
+  const isLoading = ref(true);
 
   async function fetchItems() {
-    const querySnapshot = await getDocs(collection(db, 'items'));
-    const localFollowed =
-      JSON.parse(localStorage.getItem('followedItems')) || [];
-    const localCart = JSON.parse(localStorage.getItem('cartItems')) || [];
-    const localHistory = JSON.parse(localStorage.getItem('historyItems')) || [];
+    isLoading.value = true;
+    try {
+      const querySnapshot = await getDocs(collection(db, 'items'));
+      const localFollowed =
+        JSON.parse(localStorage.getItem('followedItems')) || [];
+      const localCart = JSON.parse(localStorage.getItem('cartItems')) || [];
+      const localHistory =
+        JSON.parse(localStorage.getItem('historyItems')) || [];
 
-    followedItems.value = localFollowed;
-    cartItems.value = localCart;
-    historyItems.value = localHistory;
-    items.value = querySnapshot.docs.map((doc) => {
-      const item = { id: doc.id, ...doc.data() };
-      const cartItem = localCart.find((cart) => cart.id === item.id);
-      return {
-        ...item,
-        isFavorite: localFollowed.includes(item.id),
-        isAdded: !!cartItem,
-        currentQuantity: cartItem ? cartItem.currentQuantity : 0,
-      };
-    });
+      followedItems.value = localFollowed;
+      cartItems.value = localCart;
+      historyItems.value = localHistory;
+      items.value = querySnapshot.docs.map((doc) => {
+        const item = { id: doc.id, ...doc.data() };
+        const cartItem = localCart.find((cart) => cart.id === item.id);
+        return {
+          ...item,
+          isFavorite: localFollowed.includes(item.id),
+          isAdded: !!cartItem,
+          currentQuantity: cartItem ? cartItem.currentQuantity : 0,
+        };
+      });
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      isLoading.value = false;
+    }
   }
 
-  useAsyncState(fetchItems, []);
+  // useAsyncState(fetchItems, []);
 
   function localSetItem(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
@@ -171,5 +180,6 @@ export const useSneakersStore = defineStore('sneakers', () => {
     addToHistory,
     getItemsHistory,
     clearHistory,
+    isLoading,
   };
 });

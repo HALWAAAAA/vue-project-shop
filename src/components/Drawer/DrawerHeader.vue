@@ -5,7 +5,7 @@ const { closeDrawer } = useDrawer();
 </script>
 
 <template>
-  <div class="flex items-center gap-5 mb-8 border border-red-500">
+  <div class="flex items-center gap-5 mb-8">
     <svg
       @click="closeDrawer"
       class="opacity-30 cursor-pointer rotate-180 hover:opacity-100 transition hover: -translate-x-1"
@@ -30,6 +30,6 @@ const { closeDrawer } = useDrawer();
         stroke-linejoin="round"
       />
     </svg>
-    <h2 class="text-2xl font-bold">Cart</h2>
+    <h2 class="text-3xl font-extrabold text-gray-800 tracking-wide">Cart</h2>
   </div>
 </template>
