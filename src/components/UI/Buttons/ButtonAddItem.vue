@@ -1,4 +1,6 @@
 <script setup>
+import IconCheck from '../icons/IconCheck.vue';
+
 const props = defineProps({
   isAdded: Boolean,
 });
@@ -31,27 +33,13 @@ const emit = defineEmits(['toggle']);
           <line y2="19" y1="5" x2="12" x1="12"></line>
           <line y2="12" y1="12" x2="19" x1="5"></line>
         </svg>
-        <svg
-          v-else
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          viewBox="0 0 24 24"
-          stroke-width="2"
-          stroke-linejoin="round"
-          stroke-linecap="round"
-          stroke="currentColor"
-          height="24"
-          fill="none"
-          class="svg"
-        >
-          <path d="M5 13l4 4L19 7" stroke="white" stroke-width="2"></path>
-        </svg>
+        <IconCheck v-else />
       </span>
     </button>
   </div>
 </template>
 
-<style>
+<style scoped>
 .button {
   position: relative;
   width: 150px;

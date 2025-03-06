@@ -1,7 +1,6 @@
 <script setup>
 import { useSneakersStore } from '../../store/state';
-import ButtonMinus from '../UI/Buttons/ButtonMinus.vue';
-import ButtonPlus from '../UI/Buttons/ButtonPlus.vue';
+import BaseButton from '../UI/Buttons/BaseButton.vue';
 
 const sneakersStore = useSneakersStore();
 
@@ -28,19 +27,19 @@ const props = defineProps({
           class="flex items-center gap-3"
           v-if="props.item.isAdded && props.item.currentQuantity >= 1"
         >
-          <ButtonMinus
+          <BaseButton
             @click="sneakersStore.itemQuantityDecrement(props.item.id)"
             class="border rounded px-1 hover:bg-gray-200"
+            type="minus"
           >
-            -
-          </ButtonMinus>
+          </BaseButton>
           <b class="text-gray-800">{{ props.item.currentQuantity }}</b>
-          <ButtonPlus
+          <BaseButton
             class="border rounded px-2 hover:bg-gray-200"
             @click="sneakersStore.itemQuantityIncrement(props.item.id)"
+            type="plus"
           >
-            +
-          </ButtonPlus>
+          </BaseButton>
         </div>
 
         <img

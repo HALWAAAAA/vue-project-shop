@@ -2,11 +2,7 @@
 import { useSneakersStore } from '../../store/state';
 import ButtonFollowed from '../UI/Buttons/ButtonFollowed.vue';
 import ButtonAddItem from '../UI/Buttons/ButtonAddItem.vue';
-import ButtonPlus from '../UI/Buttons/ButtonPlus.vue';
-import ButtonMinus from '../UI/Buttons/ButtonMinus.vue';
-import Button from '../UI/Buttons/Button.vue';
-import IconPlus from '../UI/icons/IconPlus.vue';
-import IconMinus from '../UI/icons/IconMinus.vue';
+import BaseButton from '../UI/Buttons/BaseButton.vue';
 
 const sneakersStore = useSneakersStore();
 
@@ -37,7 +33,7 @@ const props = defineProps({
       <button-add-item
         alt="add to cart"
         @toggle="sneakersStore.toggleCartItem(props.item.id)"
-        :isAdded="props.item.isAdded"
+        :isAdded="props.item.isAdded ?? false"
       />
     </div>
 
@@ -46,21 +42,17 @@ const props = defineProps({
       v-if="props.item.isAdded && props.item.currentQuantity >= 1"
     >
       <p class="text-gray-600">Quantity:</p>
-      <Button
+      <BaseButton
         @click="sneakersStore.itemQuantityDecrement(props.item.id)"
-        class="border rounded px-1 hover:bg-gray-200"
         type="minus"
       >
-        <IconMinus/>
-      </Button>
+      </BaseButton>
       <b class="text-lg">{{ props.item.currentQuantity }}</b>
-      <Button
-        class="border rounded px-2 hover:bg-gray-200"
+      <BaseButton
         @click="sneakersStore.itemQuantityIncrement(props.item.id)"
         type="plus"
       >
-        <IconPlus/>
-      </Button>
+      </BaseButton>
     </div>
   </div>
 </template>
