@@ -4,6 +4,9 @@ import ButtonFollowed from '../UI/Buttons/ButtonFollowed.vue';
 import ButtonAddItem from '../UI/Buttons/ButtonAddItem.vue';
 import ButtonPlus from '../UI/Buttons/ButtonPlus.vue';
 import ButtonMinus from '../UI/Buttons/ButtonMinus.vue';
+import Button from '../UI/Buttons/Button.vue';
+import IconPlus from '../UI/icons/IconPlus.vue';
+import IconMinus from '../UI/icons/IconMinus.vue';
 
 const sneakersStore = useSneakersStore();
 
@@ -43,19 +46,21 @@ const props = defineProps({
       v-if="props.item.isAdded && props.item.currentQuantity >= 1"
     >
       <p class="text-gray-600">Quantity:</p>
-      <button-minus
+      <Button
         @click="sneakersStore.itemQuantityDecrement(props.item.id)"
         class="border rounded px-1 hover:bg-gray-200"
+        type="minus"
       >
         -
-      </button-minus>
+      </Button>
       <b class="text-lg">{{ props.item.currentQuantity }}</b>
-      <button-plus
+      <Button
         class="border rounded px-2 hover:bg-gray-200"
         @click="sneakersStore.itemQuantityIncrement(props.item.id)"
+        type="plus"
       >
         +
-      </button-plus>
+      </Button>
     </div>
   </div>
 </template>
