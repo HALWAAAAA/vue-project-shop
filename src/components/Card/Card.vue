@@ -51,7 +51,7 @@ const props = defineProps({
         class="border rounded px-1 hover:bg-gray-200"
         type="minus"
       >
-        -
+        <IconMinus/>
       </Button>
       <b class="text-lg">{{ props.item.currentQuantity }}</b>
       <Button
@@ -59,7 +59,7 @@ const props = defineProps({
         @click="sneakersStore.itemQuantityIncrement(props.item.id)"
         type="plus"
       >
-        +
+        <IconPlus/>
       </Button>
     </div>
   </div>
