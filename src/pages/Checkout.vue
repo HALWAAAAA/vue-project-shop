@@ -1,10 +1,6 @@
 <script setup>
-import { useSneakersStore } from '../store/state';
-
 import CheckoutCart from '../components/Checkout/CheckoutCart.vue';
 import CheckoutForm from '../components/Checkout/CheckoutForm.vue';
-
-const sneakersStore = useSneakersStore();
 </script>
 
 <template>

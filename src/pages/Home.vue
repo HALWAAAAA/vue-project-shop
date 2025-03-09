@@ -36,10 +36,9 @@ const onChangeSelect = (event) => {
   sortBy.value = event.target.value;
 };
 
-onMounted(() => {
-  sneakersStore.fetchItems().then(() => {
-    applyFilters();
-  });
+onMounted(async () => {
+  await sneakersStore.fetchItems();
+  applyFilters();
 });
 </script>
 
@@ -71,7 +70,7 @@ onMounted(() => {
     </div>
   </div>
 
-  <div class="mt-10 border border-orange-500">
-    <CardList :items="displayedItems" />
+  <div class="mt-10">
+    <CardList :items="displayedItems" :isLoading="sneakersStore.isLoading" />
   </div>
 </template>
