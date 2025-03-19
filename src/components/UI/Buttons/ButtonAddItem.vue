@@ -42,13 +42,17 @@ const emit = defineEmits(['toggle']);
 <style scoped>
 .button {
   position: relative;
-  width: 150px;
-  height: 25px;
+  width: auto;
+  max-width: 110px;
+  height: 35px;
   cursor: pointer;
   display: flex;
   align-items: center;
   border: 1px solid #34974d;
   background-color: #3aa856;
+  border-radius: 8px;
+  padding: 5px 10px;
+  margin-top: 5px;
 }
 
 .button,
@@ -58,25 +62,21 @@ const emit = defineEmits(['toggle']);
 }
 
 .button .button__text {
-  transform: translateX(30px);
   color: #fff;
   font-weight: 600;
-  font-size: 15px;
+  font-size: 14px;
+  text-align: center;
+  flex-grow: 1;
 }
 
 .button .button__icon {
-  position: absolute;
-  transform: translateX(109px);
-  height: 100%;
-  width: 39px;
-  background-color: #34974d;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .button .svg {
-  width: 30px;
+  width: 20px;
   stroke: #fff;
 }
 
@@ -89,8 +89,7 @@ const emit = defineEmits(['toggle']);
 }
 
 .button:hover .button__icon {
-  width: 148px;
-  transform: translateX(0);
+  width: 100%;
 }
 
 .button:active .button__icon {
@@ -108,5 +107,50 @@ const emit = defineEmits(['toggle']);
 
 .button--added .button__icon {
   background-color: #2e8644;
+}
+
+@media (max-width: 640px) {
+  .button {
+    height: 32px;
+
+    max-width: 80px;
+    padding: 4px 8px;
+  }
+
+  .button .svg {
+    width: 18px;
+  }
+
+  .button .button__text {
+    font-size: 12px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .button {
+    height: 30px;
+    max-width: 70px;
+    padding: 3px 6px;
+  }
+
+  .button .svg {
+    width: 16px;
+  }
+
+  .button .button__text {
+    font-size: 11px !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .button {
+    max-width: 90px;
+    transform: none !important;
+    font-size: 13px !important;
+  }
+
+  .button .button__text {
+    font-size: 13px !important;
+  }
 }
 </style>

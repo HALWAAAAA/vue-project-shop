@@ -17,12 +17,15 @@ const placeOrder = () => {
 </script>
 
 <template>
-  <div class="flex-1 bg-white rounded-lg shadow-md p-6 border border-gray-200">
-    <h2 class="text-2xl font-bold mb-4 text-gray-800 border-b pb-2">
+  <div
+    class="flex-1 max-w-screen-md bg-white rounded-lg shadow-md p-4 sm:p-6 border border-gray-200"
+  >
+    <h2 class="text-xl sm:text-2xl font-bold mb-4 text-gray-800 border-b pb-2">
       Shipping information
     </h2>
-    <form class="space-y-6" @submit.prevent="placeOrder">
-      <div class="flex gap-4 flex-wrap sm:flex-nowrap">
+
+    <form class="space-y-4 sm:space-y-6" @submit.prevent="placeOrder">
+      <div class="flex flex-col sm:flex-row gap-4">
         <div class="flex-1">
           <label class="block text-sm font-medium text-gray-800" for="name"
             >First name</label
@@ -32,10 +35,9 @@ const placeOrder = () => {
             placeholder="John"
             type="text"
             required
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
+            class="input-field"
           />
         </div>
-
         <div class="flex-1">
           <label class="block text-sm font-medium text-gray-800" for="surname"
             >Last name</label
@@ -45,7 +47,7 @@ const placeOrder = () => {
             id="surname"
             placeholder="Simpson"
             required
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 focus:border-blue-500 focus:ring-blue-500"
+            class="input-field"
           />
         </div>
       </div>
@@ -58,8 +60,8 @@ const placeOrder = () => {
           type="email"
           required
           id="email"
-          placeholder="exaple@gmail.com"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 focus:border-blue-500 focus:ring-blue-500"
+          placeholder="example@gmail.com"
+          class="input-field"
         />
       </div>
 
@@ -71,23 +73,22 @@ const placeOrder = () => {
           type="text"
           required
           id="address"
-          placeholder="Al.Jerozolimskie 148"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 focus:border-blue-500 focus:ring-blue-500 w-full"
+          placeholder="Al. Jerozolimskie 148"
+          class="input-field"
         />
       </div>
 
-      <div class="flex gap-4 flex-wrap sm:flex-nowrap">
+      <div class="flex flex-col sm:flex-row gap-4">
         <div class="flex-1">
-          <label for="city" class="block text-gray-800 text-sm font-medium"
+          <label for="city" class="block text-sm font-medium text-gray-800"
             >City</label
           >
           <input
-            type
-            text
+            type="text"
             id="city"
             required
             placeholder="Warsaw"
-            class="block mt-1 w-full border-gray-300 p-2 rounded-md focus:border-blue-500 focus:ring-blue-500 shadow-sm w-full"
+            class="input-field"
           />
         </div>
         <div class="flex-1">
@@ -99,7 +100,7 @@ const placeOrder = () => {
             type="text"
             id="postal"
             required
-            class="block mt-1 w-full p-2 border-gray-300 rounded-md focus:border-blue-500 focus:ring-blue-500 shadow-sm w-full"
+            class="input-field"
           />
         </div>
       </div>
@@ -112,23 +113,22 @@ const placeOrder = () => {
           type="text"
           id="card"
           required
-          placeholder="00 0000 0000 0000 00"
-          class="mt-1 block w-full rounded-md border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          placeholder="0000 0000 0000 0000"
+          class="input-field"
         />
       </div>
 
-      <div class="flex gap-4 flex-wrap sm:flex-nowrap">
+      <div class="flex flex-col sm:flex-row gap-4">
         <div class="flex-1">
-          <label for="date" class="block text-gray-800 text-sm font-medium"
+          <label for="date" class="block text-sm font-medium text-gray-800"
             >Expiry Date</label
           >
           <input
-            type
-            text
+            type="text"
             id="date"
             required
             placeholder="MM/YY"
-            class="block mt-1 w-full border-gray-300 rounded-md p-2 focus:border-blue-500 focus:ring-blue-500 shadow-sm w-full"
+            class="input-field"
           />
         </div>
         <div class="flex-1">
@@ -136,22 +136,56 @@ const placeOrder = () => {
             >CVV</label
           >
           <input
-            placeholder="00-000"
+            placeholder="000"
             type="text"
             id="cvv"
             v-model="cvv"
             required
-            class="block mt-1 w-full p-2 border-gray-300 rounded-md focus:border-blue-500 focus:ring-blue-500 shadow-sm w-full"
+            class="input-field"
           />
         </div>
       </div>
-      <button
-        type="submit"
-        :disabled="!isFormValid"
-        class="w-full py-2 px-4 rounded-md transition-colors text-white font-semibold bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
-      >
+
+      <button type="submit" :disabled="!isFormValid" class="btn-submit">
         Place Order
       </button>
     </form>
   </div>
 </template>
+
+<style scoped>
+.input-field {
+  margin-top: 4px;
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+  transition: border 0.2s;
+}
+
+.input-field:focus {
+  border-color: #2563eb;
+  outline: none;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 12px;
+  font-weight: 600;
+  color: white;
+  background-color: #2563eb;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.btn-submit:hover {
+  background-color: #1d4ed8;
+}
+
+.btn-submit:disabled {
+  background-color: #94a3b8;
+  cursor: not-allowed;
+}
+</style>

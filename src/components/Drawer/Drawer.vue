@@ -22,7 +22,7 @@ function goToCheckout() {
     <div
       class="fixed top-0 left-0 w-full h-full bg-black z-10 opacity-70"
     ></div>
-    <div class="bg-white w-96 h-full fixed right-0 top-0 z-20 p-8">
+    <div class="bg-white w-96 h-full fixed right-0 top-0 z-20 p-8 drawer">
       <DrawerHeader />
 
       <CartItemList />
@@ -34,7 +34,7 @@ function goToCheckout() {
           <b class="text-lg text-gray-800">5%</b>
         </div>
 
-        <div class="flex gap-2">
+        <div class="flex gap-2 items-center">
           <span class="text-lg text-gray-800">Total: </span>
           <div class="flex-1 border-b border-dashed border-gray-300"></div>
           <b>{{ sneakersStore.vatTotal }}$</b>
@@ -51,3 +51,14 @@ function goToCheckout() {
     </div>
   </div>
 </template>
+<style scoped>
+.drawer {
+  width: 384px;
+}
+
+@media (max-width: 640px) {
+  .drawer {
+    width: 100%;
+  }
+}
+</style>

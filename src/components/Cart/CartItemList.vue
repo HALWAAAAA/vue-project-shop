@@ -16,7 +16,7 @@ const { updateCartItems } = storeToRefs(sneakersStore);
         Your cart is empty 🛒
       </p>
     </div>
-    <div class="flex flex-col gap-4 max-h-96 overflow-y-auto">
+    <div class="flex flex-col gap-4 max-h-80 sm:max-h-96 overflow-y-auto">
       <CartItem v-for="item in updateCartItems" :key="item.id" :item="item" />
     </div>
   </div>
