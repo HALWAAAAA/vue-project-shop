@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 import { db, collection, getDocs } from '../assets/firebase';
 import { computed, ref } from 'vue';
-import { useAsyncState } from '@vueuse/core';
 
 export const useSneakersStore = defineStore('sneakers', () => {
   const items = ref([]);

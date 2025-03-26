@@ -10,17 +10,26 @@ const { getItemsHistory } = storeToRefs(sneakersStore);
 </script>
 
 <template>
-  <div class="p-6 mb-6">
+  <div class="px-4 sm:px-6 mb-6 max-w-screen-lg mx-auto">
     <ProfileHeader />
-    <div class="bg-white shadow p-6">
-      <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold text-gray-900 mb-4">Recent Orders</h2>
-        <ButtonClearHistory @click="sneakersStore.clearHistory()" />
+    <div class="bg-white shadow p-4 sm:p-6 rounded-lg">
+      <div
+        class="flex flex-col sm:flex-row justify-between items-center mb-4 sm:mb-6"
+      >
+        <h2
+          class="text-xl sm:text-xl font-bold text-gray-900 mb-4 text-center sm:text-left"
+        >
+          Recent Orders
+        </h2>
+        <ButtonClearHistory
+          @click="sneakersStore.clearHistory()"
+          class="w-full sm:w-auto mt-2 sm:mt-0"
+        />
       </div>
 
       <div v-if="sneakersStore.historyItems.length === 0">
         <p
-          class="text-2xl text-gray-900 p-4 bg-gray-100 rounded-lg shadow-md text-center"
+          class="text-lg sm:text-2xl text-gray-900 p-4 bg-gray-100 rounded-lg shadow-md text-center"
         >
           There are no recent orders
         </p>

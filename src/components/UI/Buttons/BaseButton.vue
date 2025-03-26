@@ -26,14 +26,19 @@ const buttonClasses = computed(() => ({
 
 <style scoped>
 .button {
-  font-size: 20px;
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
   font-weight: bold;
+  border-radius: 8px;
   color: #5f5f5f;
   cursor: pointer;
-  transition: transform 0.1s ease-in-out;
+  transition: transform 0.1s ease-in-out, background-color 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 2px solid transparent;
+  background-color: #fff;
 }
 
 .button:active {
@@ -56,5 +61,12 @@ const buttonClasses = computed(() => ({
 }
 .button:active {
   transform: scale(0.9);
+}
+@media (max-width: 640px) {
+  .button {
+    width: 35px;
+    height: 35px;
+    font-size: 16px;
+  }
 }
 </style>

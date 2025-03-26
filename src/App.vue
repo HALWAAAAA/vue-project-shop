@@ -9,9 +9,11 @@ const { drawerOpenData } = useDrawer();
 
 <template>
   <Drawer v-if="drawerOpenData" />
-  <div class="w-4/5 m-auto bg-white rounded-xl shadow-xl mt-14">
+  <div
+    class="w-full xs:w-4/5 max-w-screen m-auto bg-white rounded-xl shadow-xl mt-6 sm:mt-14"
+  >
     <Header />
-    <div class="p-10">
+    <div class="sm:p-10 p-4">
       <RouterView />
     </div>
   </div>

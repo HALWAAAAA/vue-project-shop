@@ -5,7 +5,7 @@ const { closeDrawer } = useDrawer();
 </script>
 
 <template>
-  <div class="flex items-center gap-5 mb-8">
+  <div class="flex items-center gap-4 sm:gap-5 sm:mb-8 mb-6">
     <svg
       @click="closeDrawer"
       class="opacity-30 cursor-pointer rotate-180 hover:opacity-100 transition hover: -translate-x-1"

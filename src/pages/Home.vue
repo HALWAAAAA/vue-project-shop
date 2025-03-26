@@ -43,34 +43,40 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="flex justify-between items-center">
-    <h2 class="text-3xl font-bold mb-8">All sneakers</h2>
-    <div class="flex gap-4">
+  <div
+    class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 w-full max-w-screen-lg mx-auto"
+  >
+    <h2 class="text-2xl sm:text-3xl font-bold whitespace-nowrap">
+      All sneakers
+    </h2>
+    <div
+      class="flex flex-col md:flex-row gap-3 w-full sm:w-auto items-center sm:items-stretch"
+    >
       <select
         @change="onChangeSelect"
-        class="py-2 px-3 border rounded-md outline-none"
+        class="py-2 px-3 border rounded-md outline-none text-sm sm:text-base w-full sm:w-40"
       >
         <option value="title">By name</option>
         <option value="-price">By price(hight)</option>
         <option value="price">By price(low)</option>
       </select>
-      <div class="relative">
+      <div class="relative w-full sm:max-w-[220px] lg:max-w-[250px]">
         <img
           src="/search.svg"
           alt="Image search"
-          class="absolute left-3 top-3"
+          class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5"
         />
         <input
           type="search"
           placeholder="Search..."
-          class="border rounded-md py-2 pl-10 pr-4 outline-none focus:border-gray-400"
+          class="border rounded-md py-2 pl-10 pr-4 outline-none focus:border-gray-400 w-full"
           v-model="searchQuery"
         />
       </div>
     </div>
   </div>
 
-  <div class="mt-10">
+  <div class="sm:mt-10 mt-6 max-w-screen-lg mx-auto px-4">
     <CardList :items="displayedItems" :isLoading="sneakersStore.isLoading" />
   </div>
 </template>
